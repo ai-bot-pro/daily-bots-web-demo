@@ -50,7 +50,7 @@ Daily Bots is built on two open-source technologies:
 - [Pipecat](https://www.pipecat.ai) - Python library for building real-time agent
 - [RTVI](https://github.com/rtvi-ai) - Open-standard for Real-Time Voice [and Video] Inference
 
-This project makes use of [`realtime-ai`](https://www.npmjs.com/package/realtime-ai), [`realtime-ai-react`](https://www.npmjs.com/package/realtime-ai-react) and [`realtime-ai-daily`](https://www.npmjs.com/package/realtime-ai-daily) to interact with the Daily Bot.
+This project makes use of [`chat-bot-rtvi-client`](https://www.npmjs.com/package/chat-bot-rtvi-client), [`chat-bot-rtvi-web-react`](https://www.npmjs.com/package/chat-bot-rtvi-web-react) and [`chat-bot-rtvi-daily-client`](https://www.npmjs.com/package/chat-bot-rtvi-daily-client) to interact with the Daily Bot.
 
 Learn more about the RTVI web client libraries [on the docs](https://docs.rtvi.ai).
 

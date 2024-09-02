@@ -1,8 +1,8 @@
 import React, { memo, useCallback, useEffect, useState } from "react";
 import clsx from "clsx";
 import { Loader2 } from "lucide-react";
-import { VoiceEvent } from "realtime-ai";
-import { useVoiceClientEvent } from "realtime-ai-react";
+import { VoiceEvent } from "chat-bot-rtvi-client";
+import { useVoiceClientEvent } from "chat-bot-rtvi-web-react";
 
 import ModelBadge from "./model";
 import WaveForm from "./waveform";

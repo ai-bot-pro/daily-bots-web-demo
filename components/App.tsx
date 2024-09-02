@@ -1,13 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { Ear, Loader2 } from "lucide-react";
-import { VoiceError, VoiceEvent, VoiceMessage } from "realtime-ai";
+import { VoiceError, VoiceEvent, VoiceMessage } from "chat-bot-rtvi-client";
 import {
   useVoiceClient,
   useVoiceClientEvent,
   useVoiceClientTransportState,
-} from "realtime-ai-react";
+} from "chat-bot-rtvi-web-react";
+import { Ear, Loader2 } from "lucide-react";
 
 import { Alert } from "./ui/alert";
 import { Button } from "./ui/button";

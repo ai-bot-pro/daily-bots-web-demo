@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Timer } from "lucide-react";
-import { VoiceEvent } from "realtime-ai";
-import { useVoiceClient, useVoiceClientEvent } from "realtime-ai-react";
+import { VoiceEvent } from "chat-bot-rtvi-client";
+import { useVoiceClient, useVoiceClientEvent } from "chat-bot-rtvi-web-react";
 
 import {
   Tooltip,

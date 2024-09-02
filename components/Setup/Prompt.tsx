@@ -5,8 +5,8 @@ import {
   LLMHelper,
   VoiceClientConfigOption,
   VoiceEvent,
-} from "realtime-ai";
-import { useVoiceClient, useVoiceClientEvent } from "realtime-ai-react";
+} from "chat-bot-rtvi-client";
+import { useVoiceClient, useVoiceClientEvent } from "chat-bot-rtvi-web-react";
 
 import { Button } from "../ui/button";
 import * as Card from "../ui/card";
@@ -28,8 +28,9 @@ const Prompt: React.FC<PromptProps> = ({ handleClose }) => {
     (config: VoiceClientConfigOption[]) => {
       const p = config
         .find((c: VoiceClientConfigOption) => c.service === "llm")
-        ?.options?.find((o: ConfigOption) => o.name === "initial_messages")
-        ?.value as LLMContextMessage[] | undefined;
+        ?.options?.find((o: ConfigOption) => o.name === "messages")?.value as
+        | LLMContextMessage[]
+        | undefined;
 
       setPrompt(p);
     }
@@ -43,7 +44,7 @@ const Prompt: React.FC<PromptProps> = ({ handleClose }) => {
       llmHelper.setContext({ messages: prompt }, true);
     } else {
       voiceClient.setServiceOptionInConfig("llm", {
-        name: "initial_messages",
+        name: "messages",
         value: prompt,
       });
     }

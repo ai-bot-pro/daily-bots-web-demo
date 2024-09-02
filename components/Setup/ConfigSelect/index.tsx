@@ -1,13 +1,14 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { cx } from "class-variance-authority";
-import Image from "next/image";
 import {
   VoiceClientConfigOption,
   VoiceClientServices,
   VoiceEvent,
-} from "realtime-ai";
-import { useVoiceClient, useVoiceClientEvent } from "realtime-ai-react";
+} from "chat-bot-rtvi-client";
+import { useVoiceClient, useVoiceClientEvent } from "chat-bot-rtvi-web-react";
+import { cx } from "class-variance-authority";
+import Image from "next/image";
 
+import { languages } from "@/app/config";
 import { CharacterContext } from "@/components/context";
 import {
   Accordion,
@@ -28,6 +29,8 @@ type CharacterData = {
   name: string;
   prompt: string;
   voice: string;
+  language: string;
+  gender: string;
 };
 
 interface ConfigSelectProps {
@@ -105,11 +108,7 @@ export const ConfigSelect: React.FC<ConfigSelectProps> = ({
     const updatedConfigOptions: VoiceClientConfigOption[] = [
       {
         service: "vad",
-        options: [{ name: "params", value: { stop_secs: vadStopSecs } }],
-      },
-      {
-        service: "tts",
-        options: [{ name: "voice", value: characterData.voice }],
+        options: [{ name: "args", value: { stop_secs: vadStopSecs } }],
       },
       {
         service: "llm",
@@ -119,7 +118,7 @@ export const ConfigSelect: React.FC<ConfigSelectProps> = ({
             value: llmModel,
           },
           {
-            name: "initial_messages",
+            name: "messages",
             value: [
               {
                 role: "system",
@@ -129,6 +128,19 @@ export const ConfigSelect: React.FC<ConfigSelectProps> = ({
                   .join("\n"),
               },
             ],
+          },
+        ],
+      },
+      {
+        service: "tts",
+        options: [
+          {
+            name: "args",
+            value: {
+              voice_name: characterData.voice,
+              language: characterData.language,
+              gender: characterData.gender,
+            },
           },
         ],
       },

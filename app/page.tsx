@@ -2,9 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
-import { LLMHelper } from "realtime-ai";
-import { DailyVoiceClient } from "realtime-ai-daily";
-import { VoiceClientAudio, VoiceClientProvider } from "realtime-ai-react";
+import { LLMHelper } from "chat-bot-rtvi-client";
+import { DailyVoiceClient } from "chat-bot-rtvi-daily-client";
+import { VoiceClientAudio, VoiceClientProvider } from "chat-bot-rtvi-web-react";
 
 import App from "@/components/App";
 import { CharacterProvider } from "@/components/context";
@@ -16,6 +16,8 @@ import {
   defaultServices,
 } from "@/rtvi.config";
 
+// Show marketing splash page
+const showSplashPage: boolean = process.env.NEXT_SHOW_SPLASH ? true : false;
 export default function Home() {
   const [showSplash, setShowSplash] = useState(true);
   const voiceClientRef = useRef<DailyVoiceClient | null>(null);

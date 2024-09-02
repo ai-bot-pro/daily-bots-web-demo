@@ -2,9 +2,10 @@
 import { defaultBotProfile, defaultMaxDuration } from "./../../rtvi.config";
 
 export async function POST(request: Request) {
-  const { services, config } = await request.json();
+  const { services, config_list } = await request.json();
+  console.log(services, config_list);
 
-  if (!services || !config || !process.env.DAILY_BOTS_URL) {
+  if (!services || !config_list || !process.env.DAILY_BOTS_URL) {
     return new Response(`Services or config not found on request body`, {
       status: 400,
     });
@@ -17,7 +18,7 @@ export async function POST(request: Request) {
     api_keys: {
       openai: process.env.OPENAI_API_KEY,
     },
-    config: [...config],
+    config: [...config_list],
   };
 
   const req = await fetch(process.env.DAILY_BOTS_URL, {
@@ -30,6 +31,7 @@ export async function POST(request: Request) {
   });
 
   const res = await req.json();
+  console.log(res);
 
   if (req.status !== 200) {
     return Response.json(res, { status: req.status });

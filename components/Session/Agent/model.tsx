@@ -1,6 +1,6 @@
 import React from "react";
-import { VoiceEvent } from "realtime-ai";
-import { useVoiceClient, useVoiceClientEvent } from "realtime-ai-react";
+import { VoiceEvent } from "chat-bot-rtvi-client";
+import { useVoiceClient, useVoiceClientEvent } from "chat-bot-rtvi-web-react";
 
 import styles from "./styles.module.css";
 

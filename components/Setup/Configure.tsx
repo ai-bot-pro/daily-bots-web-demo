@@ -1,6 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { VoiceClientConfigOption, VoiceClientServices } from "realtime-ai";
-import { useVoiceClient } from "realtime-ai-react";
+import {
+  VoiceClientConfigOption,
+  VoiceClientServices,
+} from "chat-bot-rtvi-client";
+import { useVoiceClient } from "chat-bot-rtvi-web-react";
 
 import HelpTip from "../ui/helptip";
 import { Label } from "../ui/label";

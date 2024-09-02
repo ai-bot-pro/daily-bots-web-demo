@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { LineChart, Loader2, LogOut, Settings, StopCircle } from "lucide-react";
 import {
-  PipecatMetrics,
+  AchatbotMetrics,
   TransportState,
   VoiceClientConfigOption,
   VoiceEvent,
-} from "realtime-ai";
-import { useVoiceClient, useVoiceClientEvent } from "realtime-ai-react";
+} from "chat-bot-rtvi-client";
+import { useVoiceClient, useVoiceClientEvent } from "chat-bot-rtvi-web-react";
+import { LineChart, Loader2, LogOut, Settings, StopCircle } from "lucide-react";
 
 import StatsAggregator from "../../utils/stats_aggregator";
 import { Configure } from "../Setup";
@@ -48,7 +48,7 @@ export const Session = React.memo(
 
     useVoiceClientEvent(
       VoiceEvent.Metrics,
-      useCallback((metrics: PipecatMetrics) => {
+      useCallback((metrics: AchatbotMetrics) => {
         metrics?.ttfb?.map((m: { processor: string; value: number }) => {
           stats_aggregator.addStat([m.processor, "ttfb", m.value, Date.now()]);
         });

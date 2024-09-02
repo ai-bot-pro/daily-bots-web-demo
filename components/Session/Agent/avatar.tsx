@@ -1,7 +1,7 @@
 import { useCallback, useRef } from "react";
 import Image from "next/image";
-import { VoiceEvent } from "realtime-ai";
-import { useVoiceClientEvent } from "realtime-ai-react";
+import { VoiceEvent } from "chat-bot-rtvi-client";
+import { useVoiceClientEvent } from "chat-bot-rtvi-web-react";
 
 import FaceSVG from "./face.svg";
 

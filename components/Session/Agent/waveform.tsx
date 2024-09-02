@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { useVoiceClientMediaTrack } from "realtime-ai-react";
+import { useVoiceClientMediaTrack } from "chat-bot-rtvi-web-react";
 
 const WaveForm: React.FC = React.memo(() => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
