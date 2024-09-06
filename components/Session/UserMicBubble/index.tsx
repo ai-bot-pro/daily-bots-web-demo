@@ -1,8 +1,8 @@
 import React, { useCallback, useRef } from "react";
-import clsx from "clsx";
-import { Mic, MicOff, Pause } from "lucide-react";
 import { VoiceEvent } from "chat-bot-rtvi-client";
 import { useVoiceClientEvent } from "chat-bot-rtvi-web-react";
+import clsx from "clsx";
+import { Mic, MicOff, Pause } from "lucide-react";
 
 import styles from "./styles.module.css";
 

@@ -46,6 +46,7 @@ interface ConfigSelectProps {
 const llmProviders = LLM_MODEL_CHOICES.map((choice) => ({
   label: choice.label,
   value: choice.value,
+  base_url: choice.base_url,
   models: choice.models,
 }));
 
@@ -64,6 +65,7 @@ export const ConfigSelect: React.FC<ConfigSelectProps> = ({
   const { character, setCharacter } = useContext(CharacterContext);
   const [llmProvider, setLlmProvider] = useState<string>();
   const [llmModel, setLlmModel] = useState<string>();
+  const [llmBaseUrl, setLlmBaseUrl] = useState<string>();
   const [vadStopSecs, setVadStopSecs] = useState<number>();
   const [bufferedCharacter, setBufferedCharacter] = useState<number>(character);
 
@@ -88,11 +90,14 @@ export const ConfigSelect: React.FC<ConfigSelectProps> = ({
           (option.value as string) ?? llmProviders[0].models[0].value
         );
       }
+      if (option.name === "base_url") {
+        setLlmBaseUrl((option.value as string) ?? llmProviders[0].base_url);
+      }
     });
 
     // Get the current vad stop secs
     voiceClient.getServiceOptionsFromConfig("vad").options.find((option) => {
-      if (option.name === "params") {
+      if (option.name === "args") {
         setVadStopSecs((option.value as { stop_secs: number }).stop_secs);
       }
     });
@@ -100,7 +105,7 @@ export const ConfigSelect: React.FC<ConfigSelectProps> = ({
 
   // Update the config options when the character changes
   useEffect(() => {
-    if (!llmModel || !llmProvider || !vadStopSecs) return;
+    if (!llmModel || !llmProvider || !vadStopSecs || !voiceClient) return;
 
     // Get character data and update config
     const characterData = PRESET_CHARACTERS[bufferedCharacter] as CharacterData;
@@ -108,15 +113,26 @@ export const ConfigSelect: React.FC<ConfigSelectProps> = ({
     const updatedConfigOptions: VoiceClientConfigOption[] = [
       {
         service: "vad",
-        options: [{ name: "args", value: { stop_secs: vadStopSecs } }],
+        options: [
+          { name: "args", value: { stop_secs: vadStopSecs } },
+          { name: "tag", value: "silero_vad_analyzer" },
+        ],
+      },
+      {
+        service: "asr",
+        options: [
+          {
+            name: "args",
+            value: { language: characterData.language, model: "nova-2" },
+          },
+          { name: "tag", value: "deepgram_asr_processor" },
+        ],
       },
       {
         service: "llm",
         options: [
-          {
-            name: "model",
-            value: llmModel,
-          },
+          { name: "base_url", value: llmBaseUrl },
+          { name: "model", value: llmModel },
           {
             name: "messages",
             value: [
@@ -129,6 +145,7 @@ export const ConfigSelect: React.FC<ConfigSelectProps> = ({
               },
             ],
           },
+          { name: "tag", value: "openai_llm_processor" },
         ],
       },
       {
@@ -142,12 +159,22 @@ export const ConfigSelect: React.FC<ConfigSelectProps> = ({
               gender: characterData.gender,
             },
           },
+          { name: "tag", value: "tts_edge" },
         ],
       },
     ];
 
+    console.log("updatedConfigOptions", updatedConfigOptions);
     onConfigUpdate(updatedConfigOptions, { llm: llmProvider });
-  }, [llmProvider, llmModel, onConfigUpdate, bufferedCharacter, vadStopSecs]);
+  }, [
+    llmProvider,
+    llmBaseUrl,
+    llmModel,
+    onConfigUpdate,
+    bufferedCharacter,
+    vadStopSecs,
+    voiceClient,
+  ]);
 
   const availableModels = LLM_MODEL_CHOICES.find(
     (choice) => choice.value === llmProvider
@@ -205,6 +232,10 @@ export const ConfigSelect: React.FC<ConfigSelectProps> = ({
                           setLlmModel(
                             llmProviders.find((p) => p.value === value)
                               ?.models[0].value!
+                          );
+                          setLlmBaseUrl(
+                            llmProviders.find((p) => p.value === value)
+                              ?.base_url!
                           );
                         }}
                       >

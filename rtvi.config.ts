@@ -1,76 +1,51 @@
+import { languages } from "./app/config";
+
 export const BOT_READY_TIMEOUT = 15 * 1000; // 15 seconds
 
-export const defaultBotProfile = "voice_2024_08";
-export const defaultMaxDuration = 600;
+export const VAD_MODEL_CHOICES = [
+  {
+    label: "Silero",
+    value: "silero",
+    tag: "silero_vad_processor",
+    models: [
+      { label: "Silero VAD", value: "silero_vad", "repo_or_dir": "snakers4/silero-vad" },
+    ],
+  },
+];
 
-export const defaultServices = {
-  vad: "silero",
-  asr: "deepgram",
-  llm: "together",
-  tts: "edge",
-};
-
-export const defaultConfig = [
+export const ASR_MODEL_CHOICES = [
   {
-    service: "pipeline",
-    options: [
-      { name: "allow_interruptions", value: false },
-      { name: "enable_metrics", value: true },
-      { name: "report_only_initial_ttfb", value: true },
-    ],
-  },
-  {
-    service: "vad",
-    options: [
-      { name: "args", value: { stop_secs: 0.8 } },
-      { name: "tag", value: "silero_vad_analyzer" },
-    ],
-  },
-  {
-    service: "asr",
-    options: [
-      { name: "args", value: { language: "zh", model: "nova-2" } },
-      { name: "tag", value: "deepgram_asr_processor" },
-    ],
-  },
-  {
-    service: "llm",
-    options: [
-      { name: "model", value: "Qwen/Qwen2-72B-Instruct" },
-      { name: "base_url", value: "https://api.together.xyz/v1" },
-      {
-        name: "messages",
-        value: [
-          {
-            role: "system",
-            content:
-              "你是一个叫奥利给的助理。你可以问我任何问题。保持回答简短和清晰。请用中文回答。",
-          },
-        ],
-      },
-      { name: "tag", value: "openai_llm_processor" },
-    ],
-  },
-  {
-    service: "tts",
-    options: [
-      {
-        name: "args",
-        value: {
-          voice_name: "zh-CN-YunjianNeural",
-          language: "zh",
-          gender: "Male",
-        },
-      },
-      { name: "tag", value: "tts_edge" },
+    label: "Deepgram",
+    value: "deepgram",
+    base_url: "https://api.deepgram.com/v1",
+    tag: "deepgram_asr_processor",
+    models: [
+      { label: "Nova 2", value: "nova-2", language: "zh" },
+      { label: "Nova 2", value: "nova-2", language: "en" },
     ],
   },
 ];
 
 export const LLM_MODEL_CHOICES = [
   {
+    label: "Groq AI",
+    value: "groq",
+    base_url: "https://api.groq.com/openai/v1",
+    tag: "openai_llm_processor",
+    models: [//https://console.groq.com/docs/models
+      { label: "Llama 3.1 70B", value: "llama-3.1-70b-versatile" },
+      { label: "Llama 3.1 8B", value: "llama-3.1-8b-instant" },
+      { label: "Meta Llama 3 70B", value: "llama3-70b-8192" },
+      { label: "Meta Llama 3 8B", value: "llama3-8b-8192" },
+      { label: "Gemma 2 9B", value: "gemma2-9b-it" },
+      { label: "Gemma 7B", value: "gemma2-7b-it" },
+    ],
+  },
+  {
     label: "Together AI",
     value: "together",
+    base_url: "https://api.together.xyz/v1",
+    tag: "openai_llm_processor",
     models: [//https://docs.together.ai/docs/chat-models
       {
         label: "Qwen 2 Instruct (72B)",
@@ -104,18 +79,6 @@ export const LLM_MODEL_CHOICES = [
         label: "Gemma 2 9B",
         value: "google/gemma-2-9b-it",
       },
-    ],
-  },
-  {
-    label: "Groq AI",
-    value: "groq",
-    models: [//https://console.groq.com/docs/models
-      { label: "Llama 3.1 70B", value: "llama-3.1-70b-versatile" },
-      { label: "Llama 3.1 8B", value: "llama-3.1-8b-instant" },
-      { label: "Meta Llama 3 70B", value: "llama3-70b-8192" },
-      { label: "Meta Llama 3 8B", value: "llama3-8b-8192" },
-      { label: "Gemma 2 9B", value: "gemma2-9b-it" },
-      { label: "Gemma 7B", value: "gemma2-7b-it" },
     ],
   },
   /*
@@ -152,8 +115,8 @@ export const TTS_VOICES = [
 
 export const EN_PRESET_CHARACTERS = [
   {
-    name: "Default",
-    prompt: `You are a assistant called ExampleBot. You can ask me anything.
+    name: "Default EN Chat Bot",
+    prompt: `You are a assistant called Chat Bot. You can ask me anything.
     Keep responses brief and legible.
     Your responses will converted to audio. Please do not include any special characters in your response other than '!' or '?'.
     Start by briefly introducing yourself.`,
@@ -229,8 +192,8 @@ export const EN_PRESET_CHARACTERS = [
 
 export const ZH_PRESET_CHARACTERS = [
   {
-    name: "奥利给-默认",
-    prompt: `你是一个叫奥利给的助理。你可以问我任何问题。保持回答简短和清晰。请用中文回答。`,
+    name: "老板奥利给-默认",
+    prompt: `你是一个叫奥利给的助理，老板的得力助手。你可以问我任何问题。保持回答简短和清晰。请用中文回答。请说:老板您好，元气满满的一天`,
     voice: "zh-CN-YunjianNeural",
     language: "zh",
     gender: "Male",
@@ -384,4 +347,71 @@ export const ZH_PRESET_CHARACTERS = [
   },
 ];
 
-export const PRESET_CHARACTERS = ZH_PRESET_CHARACTERS;
+export const PRESET_CHARACTERS = [...ZH_PRESET_CHARACTERS, ...EN_PRESET_CHARACTERS];
+
+export const defaultBotProfile = "voice_2024_08";
+export const defaultMaxDuration = 600;
+
+export const defaultServices = {
+  vad: "silero",
+  asr: "deepgram",
+  llm: "groq",
+  tts: "edge",
+};
+
+export const defaultConfig = [
+  {
+    service: "pipeline",
+    options: [
+      { name: "allow_interruptions", value: false },
+      { name: "enable_metrics", value: true },
+      { name: "report_only_initial_ttfb", value: true },
+    ],
+  },
+  {
+    service: "vad",
+    options: [
+      { name: "args", value: { stop_secs: 0.7 } },
+      { name: "tag", value: "silero_vad_analyzer" },
+    ],
+  },
+  {
+    service: "asr",
+    options: [
+      { name: "args", value: { language: "zh", model: "nova-2" } },
+      { name: "tag", value: "deepgram_asr_processor" },
+    ],
+  },
+  {
+    service: "llm",
+    options: [
+      { name: "model", value: LLM_MODEL_CHOICES[0].models[0].value },
+      { name: "base_url", value: LLM_MODEL_CHOICES[0].base_url },
+      {
+        name: "messages",
+        value: [
+          {
+            role: "system",
+            content:
+              PRESET_CHARACTERS[0].prompt,
+          },
+        ],
+      },
+      { name: "tag", value: LLM_MODEL_CHOICES[0].tag },
+    ],
+  },
+  {
+    service: "tts",
+    options: [
+      {
+        name: "args",
+        value: {
+          voice_name: "zh-CN-YunjianNeural",
+          language: "zh",
+          gender: "Male",
+        },
+      },
+      { name: "tag", value: "tts_edge" },
+    ],
+  },
+];
